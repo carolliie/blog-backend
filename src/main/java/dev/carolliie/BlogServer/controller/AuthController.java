@@ -5,6 +5,7 @@ import dev.carolliie.BlogServer.entity.LoginResponseDTO;
 import dev.carolliie.BlogServer.entity.RegisterDTO;
 import dev.carolliie.BlogServer.entity.User;
 import dev.carolliie.BlogServer.repository.UserRepository;
+import dev.carolliie.BlogServer.security.TokenResponse;
 import dev.carolliie.BlogServer.security.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,9 @@ public class AuthController {
     public ResponseEntity login (@RequestBody @Valid AuthenticationDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authManager.authenticate(usernamePassword);
-        var token = tokenService.generateToken((User) auth.getPrincipal());
+        TokenResponse tokenResponse = tokenService.generateToken((User) auth.getPrincipal());
 
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        return ResponseEntity.ok(tokenResponse);
     }
 
     @PostMapping("/register")

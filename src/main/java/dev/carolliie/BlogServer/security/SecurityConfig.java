@@ -36,14 +36,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll() // Permite requisições de login sem autenticação
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() // Permite requisições de registro sem autenticação
-                        .requestMatchers(HttpMethod.POST, "/api/posts").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/posts").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/posts").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/posts/{postId}").permitAll()// Restrição de acesso baseado em papel
                         .anyRequest().authenticated() // Qualquer outra requisição precisa estar autenticada
                 )
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
-                    corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
+                    corsConfiguration.setAllowedOrigins(List.of("http://127.0.0.1:4200"));
                     corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
                     corsConfiguration.setAllowedHeaders(List.of("*"));
                     corsConfiguration.setAllowCredentials(true);
