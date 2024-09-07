@@ -1,6 +1,7 @@
 package dev.carolliie.BlogServer.controller;
 
 import dev.carolliie.BlogServer.entity.Post;
+import dev.carolliie.BlogServer.entity.PostDTO;
 import dev.carolliie.BlogServer.repository.PostRepository;
 import dev.carolliie.BlogServer.service.PostService;
 import jakarta.persistence.EntityNotFoundException;
@@ -51,4 +52,23 @@ public class PostController {
         }
     }
 
+    @DeleteMapping("/delete/{postId}")
+    public ResponseEntity<?> deletePostById(@PathVariable Long postId) {
+        try {
+            Post post = postService.deletePostById(postId);
+            return ResponseEntity.ok("Post deleted successfully");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/edit/{postId}")
+    public ResponseEntity<?> editPostById(@PathVariable Long postId, @RequestBody PostDTO postDto) {
+        try {
+            Post post = postService.editPostById(postId, postDto);
+            return ResponseEntity.ok("Post edited successfully");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }

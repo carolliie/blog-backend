@@ -1,6 +1,7 @@
 package dev.carolliie.BlogServer.service;
 
 import dev.carolliie.BlogServer.entity.Post;
+import dev.carolliie.BlogServer.entity.PostDTO;
 
 import java.util.List;
 
@@ -11,4 +12,8 @@ public interface PostService {
     List<Post> getAllPosts();
 
     Post getPostById(Long id);
+
+    Post deletePostById(Long id);
+
+    Post editPostById(Long id, PostDTO postDto);
 }
