@@ -130,8 +130,9 @@ Seguindo essas etapas, você terá a aplicação configurada e pronta para uso e
      ```json
      {
        "username": "novoUsuario",
+       "email": "email@exemplo.com",
        "password": "novaSenha",
-       "email": "email@exemplo.com"
+       "role": "admin" (or user)
      }
      ```
 
@@ -145,9 +146,10 @@ Seguindo essas etapas, você terá a aplicação configurada e pronta para uso e
      - Corpo da requisição (JSON):
        ```json
        {
-         "title": "Título do Post",
+         "name": "Título do Post",
          "content": "Conteúdo do Post",
-         "author": "Autor do Post"
+         "img": "Imagem do Post",
+         "tags": ["tag1", "tag2"]
        }
        ```
    - **Obter Todos os Posts**:
@@ -165,8 +167,10 @@ Seguindo essas etapas, você terá a aplicação configurada e pronta para uso e
      - Corpo da requisição (JSON):
        ```json
        {
-         "title": "Novo Título do Post",
-         "content": "Novo Conteúdo do Post"
+         "name": "Novo Título do Post",
+         "content": "Novo Conteúdo do Post",
+         "img": "Imagem do Post (URL)",
+         "tags": ["Tag1", "Tag2"],
        }
        ```
    - **Deletar Post**:
