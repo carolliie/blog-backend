@@ -41,7 +41,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/posts/{postId}").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/posts/delete/{postId}").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/posts/edit/{postId}").authenticated()
-                        .anyRequest().authenticated() // Qualquer outra requisição precisa estar autenticada
+                        .anyRequest().permitAll()
                 )
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();

@@ -192,11 +192,11 @@ Seguindo essas etapas, você terá a aplicação configurada e pronta para uso e
 ### Documentação Adicional
 
 6. **Documentação de API**:
-   - Se o projeto incluir uma documentação de API como Swagger, informe o caminho para acessá-la:
+   - Documentação de API com o <a href="https://springdoc.org">Swagger</a>:
      ```bash
      http://localhost:8080/swagger-ui.html
      ```
-   - Essa interface gráfica facilita o entendimento e o teste das APIs disponíveis.
+   - Essa interface gráfica facilita o entendimento e o teste das requisições disponíveis.
 
 ### Segurança e Práticas Recomendadas
 
