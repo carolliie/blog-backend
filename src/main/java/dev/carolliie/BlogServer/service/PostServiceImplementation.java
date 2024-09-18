@@ -1,5 +1,6 @@
 package dev.carolliie.BlogServer.service;
 
+import com.github.slugify.Slugify;
 import dev.carolliie.BlogServer.entity.Post;
 import dev.carolliie.BlogServer.entity.PostDTO;
 import dev.carolliie.BlogServer.repository.PostRepository;
@@ -14,13 +15,17 @@ import java.util.Optional;
 @Service
 public class PostServiceImplementation implements PostService {
 
+    final Slugify slg = Slugify.builder().build();
+
     @Autowired
     private PostRepository postRepository;
 
     public Post savePost(Post post) {
+        final String result = slg.slugify(post.getName());
         post.setLikeCount(0);
         post.setViewCount(0);
         post.setDate(new Date());
+        post.setSlug(result);
 
         return postRepository.save(post);
     }
@@ -31,6 +36,15 @@ public class PostServiceImplementation implements PostService {
 
     public Post getPostById(Long postId) {
         Optional<Post> post = postRepository.findById(postId);
+        if (post.isPresent()) {
+            return post.get();
+        } else {
+            throw new EntityNotFoundException("Post not found");
+        }
+    }
+
+    public Post getPostBySlug(String slug) {
+        Optional<Post> post = postRepository.findBySlug(slug);
         if (post.isPresent()) {
             return post.get();
         } else {
@@ -58,6 +72,9 @@ public class PostServiceImplementation implements PostService {
             }
             if (postDto.getContent() != null) {
                 post.setContent(postDto.getContent());
+            }
+            if (postDto.getSlug() != null) {
+                post.setContent(postDto.getSlug());
             }
             if (postDto.getImg() != null) {
                 post.setImg(postDto.getImg());

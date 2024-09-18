@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Data
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,7 +27,11 @@ public class Post {
     @Column(length = 5000)
     private String content;
 
+    @Column(length = 5000)
     private String img;
+
+    @Column(length = 5000)
+    private String slug;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
@@ -34,6 +39,7 @@ public class Post {
     private int likeCount;
 
     private int viewCount;
+
 
     @ElementCollection
     @CollectionTable(name = "post_tags", joinColumns = @JoinColumn(name = "post_id"))

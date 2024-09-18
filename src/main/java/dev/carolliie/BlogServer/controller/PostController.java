@@ -17,6 +17,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class PostController {
 
+
     @Autowired
     private PostService postService;
 
@@ -42,7 +43,7 @@ public class PostController {
         }
     }
 
-    @GetMapping("/{postId}")
+    /*@GetMapping("/{postId}")
     public ResponseEntity<?> getPostById(@PathVariable Long postId) {
         try {
             Post post = postService.getPostById(postId);
@@ -50,7 +51,24 @@ public class PostController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }*/
+
+    @GetMapping("/{slug}")
+    public ResponseEntity<?> getPostBySlug(@PathVariable String slug) {
+        try {
+            Post post = postService.getPostBySlug(slug);
+
+            if (post == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Slug not found");
+            }
+
+            return ResponseEntity.ok(post);
+
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
+
 
     @DeleteMapping("/delete/{postId}")
     public ResponseEntity<?> deletePostById(@PathVariable Long postId) {
