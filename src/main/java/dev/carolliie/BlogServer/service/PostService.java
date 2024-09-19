@@ -15,7 +15,9 @@ public interface PostService {
 
     Post deletePostById(Long id);
 
-    Post editPostById(Long id, PostDTO postDto);
+    //Post editPostById(Long id, PostDTO postDto);
 
     Post getPostBySlug(String slug);
+
+    Post editPostBySlug(String postSlug, PostDTO postDto);
 }

@@ -80,7 +80,17 @@ public class PostController {
         }
     }
 
-    @PatchMapping("/edit/{postId}")
+    @PatchMapping("/edit/{postSlug}")
+    public ResponseEntity<?> editPostBySlug(@PathVariable String postSlug, @RequestBody PostDTO postDto) {
+        try {
+            Post post = postService.editPostBySlug(postSlug, postDto);
+            return ResponseEntity.ok("Post edited successfully");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    /*@PatchMapping("/edit/{postId}")
     public ResponseEntity<?> editPostById(@PathVariable Long postId, @RequestBody PostDTO postDto) {
         try {
             Post post = postService.editPostById(postId, postDto);
@@ -88,5 +98,5 @@ public class PostController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-    }
+    }*/
 }

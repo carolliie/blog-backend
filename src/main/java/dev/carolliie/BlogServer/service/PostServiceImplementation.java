@@ -62,8 +62,39 @@ public class PostServiceImplementation implements PostService {
         }
     }
 
-    public Post editPostById(Long postId, PostDTO postDto) {
-        Optional<Post> optionalPost = postRepository.findById(postId);
+    /*public Post editPostById(Long id, PostDTO postDto) {
+        Optional<Post> optionalPost = postRepository.findById(id);
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
+
+            if (postDto.getName() != null) {
+                post.setName(postDto.getName());
+            }
+            if (postDto.getContent() != null) {
+                post.setContent(postDto.getContent());
+            }
+            if (postDto.getSlug() != null) {
+                post.setContent(postDto.getSlug());
+            }
+            if (postDto.getImg() != null) {
+                post.setImg(postDto.getImg());
+            }
+            if (postDto.getDate() != null) {
+                post.setDate(postDto.getDate());
+            }
+            if (postDto.getTags() != null) {
+                post.setTags(postDto.getTags());
+            }
+
+            postRepository.save(post);
+            return post;
+        } else {
+            throw new EntityNotFoundException("Post not found or deleted.");
+        }
+    }*/
+
+    public Post editPostBySlug(String postSlug, PostDTO postDto) {
+        Optional<Post> optionalPost = postRepository.findBySlug(postSlug);
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
 
