@@ -24,7 +24,7 @@ public class Post {
 
     private String name;
 
-    @Column(length = 5000)
+    @Column(length = 150000)
     private String content;
 
     @Column(length = 5000)

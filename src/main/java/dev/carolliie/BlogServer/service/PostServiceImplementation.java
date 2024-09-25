@@ -10,12 +10,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
 public class PostServiceImplementation implements PostService {
 
-    final Slugify slg = Slugify.builder().build();
+    final Slugify slg = Slugify.builder().locale(Locale.US).build();
 
     @Autowired
     private PostRepository postRepository;
