@@ -21,10 +21,12 @@ public class PostServiceImplementation implements PostService {
     private PostRepository postRepository;
 
     public Post savePost(Post post) {
-        final String result = slg.slugify(post.getName());
+        String result = slg.slugify(post.getName());
         post.setLikeCount(0);
         post.setViewCount(0);
         post.setDate(new Date());
+        post.setSlug(result);
+        result = generateUniqueSlug(post.getName());
         post.setSlug(result);
 
         return postRepository.save(post);
@@ -62,37 +64,6 @@ public class PostServiceImplementation implements PostService {
         }
     }
 
-    /*public Post editPostById(Long id, PostDTO postDto) {
-        Optional<Post> optionalPost = postRepository.findById(id);
-        if (optionalPost.isPresent()) {
-            Post post = optionalPost.get();
-
-            if (postDto.getName() != null) {
-                post.setName(postDto.getName());
-            }
-            if (postDto.getContent() != null) {
-                post.setContent(postDto.getContent());
-            }
-            if (postDto.getSlug() != null) {
-                post.setContent(postDto.getSlug());
-            }
-            if (postDto.getImg() != null) {
-                post.setImg(postDto.getImg());
-            }
-            if (postDto.getDate() != null) {
-                post.setDate(postDto.getDate());
-            }
-            if (postDto.getTags() != null) {
-                post.setTags(postDto.getTags());
-            }
-
-            postRepository.save(post);
-            return post;
-        } else {
-            throw new EntityNotFoundException("Post not found or deleted.");
-        }
-    }*/
-
     public Post editPostBySlug(String postSlug, PostDTO postDto) {
         Optional<Post> optionalPost = postRepository.findBySlug(postSlug);
         if (optionalPost.isPresent()) {
@@ -100,7 +71,9 @@ public class PostServiceImplementation implements PostService {
 
             if (postDto.getName() != null) {
                 post.setName(postDto.getName());
-                final String newSlug = slg.slugify(postDto.getName());
+                String newSlug = slg.slugify(postDto.getName());
+                post.setSlug(newSlug);
+                newSlug = generateUniqueSlug(postDto.getName());
                 post.setSlug(newSlug);
             }
             if (postDto.getContent() != null) {
@@ -121,5 +94,16 @@ public class PostServiceImplementation implements PostService {
         } else {
             throw new EntityNotFoundException("Post not found or deleted.");
         }
+    }
+
+    private String generateUniqueSlug(String postSlug) {
+        String slugCheck = postSlug;
+        int counter = 1;
+
+        while (postRepository.findBySlug(slugCheck).isPresent()) {
+            slugCheck = postSlug + "-" + counter;
+            counter++;
+        }
+        return slugCheck;
     }
 }
