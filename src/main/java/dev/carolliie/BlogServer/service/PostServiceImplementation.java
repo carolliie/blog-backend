@@ -100,12 +100,11 @@ public class PostServiceImplementation implements PostService {
 
             if (postDto.getName() != null) {
                 post.setName(postDto.getName());
+                final String newSlug = slg.slugify(postDto.getName());
+                post.setSlug(newSlug);
             }
             if (postDto.getContent() != null) {
                 post.setContent(postDto.getContent());
-            }
-            if (postDto.getSlug() != null) {
-                post.setContent(postDto.getSlug());
             }
             if (postDto.getImg() != null) {
                 post.setImg(postDto.getImg());
