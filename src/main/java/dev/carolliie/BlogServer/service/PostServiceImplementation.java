@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 public class PostServiceImplementation implements PostService {
 
-    final Slugify slg = Slugify.builder().locale(Locale.US).build();
+    final Slugify slg = Slugify.builder().build();
 
     @Autowired
     private PostRepository postRepository;
@@ -27,7 +27,6 @@ public class PostServiceImplementation implements PostService {
         post.setViewCount(0);
         post.setDate(new Date());
         post.setSlug(result);
-        result = generateUniqueSlug(post.getName());
         post.setSlug(result);
 
         return postRepository.save(post);
@@ -73,8 +72,6 @@ public class PostServiceImplementation implements PostService {
             if (postDto.getName() != null) {
                 post.setName(postDto.getName());
                 String newSlug = slg.slugify(postDto.getName());
-                post.setSlug(newSlug);
-                newSlug = generateUniqueSlug(postDto.getName());
                 post.setSlug(newSlug);
             }
             if (postDto.getContent() != null) {
