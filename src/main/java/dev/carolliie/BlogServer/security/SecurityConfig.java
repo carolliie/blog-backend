@@ -34,7 +34,6 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/api/send-email").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/posts").authenticated()
@@ -42,14 +41,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/posts/{postId}").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/posts/delete/{postId}").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/posts/edit/{postId}").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/send-email").permitAll()
                         .anyRequest().permitAll()
                 )
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
                     corsConfiguration.setAllowedOrigins(List.of("http://127.0.0.1:4200"));
-                    corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
+                    corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
                     corsConfiguration.setAllowedHeaders(List.of("*"));
                     corsConfiguration.setAllowCredentials(true);
+                    corsConfiguration.setMaxAge(3600L);
                     return corsConfiguration;
                 })) // Configura o CORS
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
