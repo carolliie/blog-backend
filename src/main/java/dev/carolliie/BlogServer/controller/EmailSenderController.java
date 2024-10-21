@@ -18,10 +18,11 @@ public class EmailSenderController {
     @PostMapping("/send-email")
     public ResponseEntity<String> sendEmail(@RequestBody Email email) {
         try {
+            String mailTo = System.getenv("MAIL_TO");
             String subject = "Olá, Carole! Uma nova mensagem de " + email.getName();
             String body = "Nome: " + email.getName() + "\nEmail: " + email.getEmail() + "\n\nMessagem:\n" + email.getMessage();
 
-            emailSenderService.sendEmail("${MAIL_TO}", subject, body);
+            emailSenderService.sendEmail(mailTo, subject, body);
             return ResponseEntity.ok("Email sent successfully!");
 
         } catch (Exception e) {
