@@ -40,7 +40,7 @@ public class AuthController {
         return ResponseEntity.ok(tokenResponse);
     }
 
-    @PostMapping("/register")
+    /*@PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
         if (this.repository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().build();
 
@@ -51,6 +51,6 @@ public class AuthController {
         this.repository.save(newUser);
 
         return ResponseEntity.ok().build();
-    }
+    }*/
 
 }
