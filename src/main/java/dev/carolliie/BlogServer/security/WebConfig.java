@@ -15,8 +15,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+        String allowedOrigins = System.getenv("ALLOWED_ORIGINS");
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://blog-frontend-production-18d7.up.railway.app"));
+        configuration.setAllowedOrigins(Arrays.asList(allowedOrigins));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
