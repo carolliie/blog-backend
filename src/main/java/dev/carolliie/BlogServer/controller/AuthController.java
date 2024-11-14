@@ -1,7 +1,6 @@
 package dev.carolliie.BlogServer.controller;
 
 import dev.carolliie.BlogServer.entity.AuthenticationDTO;
-import dev.carolliie.BlogServer.entity.LoginResponseDTO;
 import dev.carolliie.BlogServer.entity.RegisterDTO;
 import dev.carolliie.BlogServer.entity.User;
 import dev.carolliie.BlogServer.repository.UserRepository;
