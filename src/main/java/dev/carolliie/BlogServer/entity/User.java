@@ -1,10 +1,8 @@
 package dev.carolliie.BlogServer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +13,7 @@ import java.util.List;
 @Entity(name = "users")
 @Table(name = "users")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -27,46 +26,15 @@ public class User implements UserDetails {
 
     private String email;
 
+    private String bio;
+
     private String password;
 
     private UserRole role;
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
+    private String profilePicture;
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    private String slug;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -87,23 +55,12 @@ public class User implements UserDetails {
         return role;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-
-    public User(String username, String email, String password, UserRole role) {
+    public User(String username, String email, UserRole role, String password, String profilePicture, String bio) {
         this.username = username;
         this.email = email;
-        this.password = password;
         this.role = role;
+        this.password = password;
+        this.profilePicture = profilePicture;
+        this.bio = bio;
     }
 }

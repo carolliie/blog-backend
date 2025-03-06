@@ -2,56 +2,58 @@ package dev.carolliie.BlogServer.controller;
 
 import dev.carolliie.BlogServer.entity.Post;
 import dev.carolliie.BlogServer.entity.PostDTO;
+import dev.carolliie.BlogServer.entity.Project;
+import dev.carolliie.BlogServer.entity.ProjectDTO;
 import dev.carolliie.BlogServer.repository.PostRepository;
+import dev.carolliie.BlogServer.repository.ProjectRepository;
 import dev.carolliie.BlogServer.service.PostService;
+import dev.carolliie.BlogServer.service.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController()
-@RequestMapping("api/posts")
+@RequestMapping("api/projects")
 @CrossOrigin(origins = "*")
-public class PostController {
+public class ProjectController {
 
 
     @Autowired
-    private PostService postService;
+    private ProjectService projectService;
 
     @PostMapping
-    public ResponseEntity<?> createPost(@RequestBody Post post, @RequestPart(value = "file", required = false) MultipartFile file) {
+    public ResponseEntity<?> createProject(@RequestBody Project project) {
         try {
-            Post createdPost = postService.savePost(post, file);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
+            Project createdProject = projectService.saveProject(project);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdProject);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GetMapping
-    public ResponseEntity<List<Post>> getAllPosts() {
+    public ResponseEntity<List<Project>> getAllProjects() {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(postService.getAllPosts());
+            return ResponseEntity.status(HttpStatus.OK).body(projectService.getAllProjects());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GetMapping("/{slug}")
-    public ResponseEntity<?> getPostBySlug(@PathVariable String slug) {
+    public ResponseEntity<?> getProjectBySlug(@PathVariable String slug) {
         try {
-            Post post = postService.getPostBySlug(slug);
+            Project project = projectService.getProjectBySlug(slug);
 
-            if (post == null) {
+            if (project == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Slug not found");
             }
 
-            return ResponseEntity.ok(post);
+            return ResponseEntity.ok(project);
 
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -59,25 +61,23 @@ public class PostController {
     }
 
 
-    @DeleteMapping("/delete/{postId}")
-    public ResponseEntity<?> deletePostById(@PathVariable Long postId) {
+    @DeleteMapping("/delete/{projectId}")
+    public ResponseEntity<?> deleteProjectById(@PathVariable Long projectId) {
         try {
-            Post post = postService.deletePostById(postId);
-            return ResponseEntity.ok("Post deleted successfully");
+            Project project = projectService.deleteProjectById(projectId);
+            return ResponseEntity.ok("Project deleted successfully");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
-    @PatchMapping("/edit/{postSlug}")
-    public ResponseEntity<?> editPostBySlug(@PathVariable String postSlug, @RequestBody PostDTO postDto, @RequestPart(value = "file", required = false) MultipartFile file) {
+    @PatchMapping("/edit/{projectSlug}")
+    public ResponseEntity<?> editProjectBySlug(@PathVariable String projectSlug, @RequestBody ProjectDTO projectDto) {
         try {
-            Post post = postService.editPostBySlug(postSlug, postDto, file);
-            return ResponseEntity.ok("Post edited successfully");
+            Project project = projectService.editProjectBySlug(projectSlug, projectDto);
+            return ResponseEntity.ok("Project edited successfully");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }

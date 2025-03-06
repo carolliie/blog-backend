@@ -37,16 +37,26 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/posts").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/projects").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/posts").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/posts/{postId}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/projects").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users/{slug}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/posts/{postSlug}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/projects/{projectSlug}").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/posts/delete/{postId}").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/projects/delete/{projectId}").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/posts/edit/{postId}").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/api/projects/edit/{projectId}").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/api/users/edit/{userSlug}").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/send-email").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/logout").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/analytics/track").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/analytics").permitAll()
                         .anyRequest().permitAll()
                 )
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
-                    corsConfiguration.setAllowedOrigins(List.of("https://carollie.netlify.app"));
+                    corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
                     corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
                     corsConfiguration.setAllowedHeaders(List.of("*"));
                     corsConfiguration.setAllowCredentials(true);

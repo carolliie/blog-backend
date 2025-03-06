@@ -5,16 +5,17 @@ import com.github.slugify.Slugify;
 import java.util.Date;
 import java.util.List;
 
-public class PostDTO {
+public class ProjectDTO {
 
     final Slugify slg = Slugify.builder().build();
     String name;
     String content;
     String slug;
     String img;
-    Date date;
+    String projectColor;
     String tagColor;
     String tagTextColor;
+    Date date;
 
     public List<String> getTags() {
         return tags;
@@ -40,6 +41,30 @@ public class PostDTO {
         this.img = img;
     }
 
+    public String getProjectColor() {
+        return projectColor;
+    }
+
+    public void setProjectColor(String projectColor) {
+        this.projectColor = projectColor;
+    }
+
+    public String getTagColor() {
+        return tagColor;
+    }
+
+    public void setTagColor(String tagColor) {
+        this.tagColor = tagColor;
+    }
+
+    public String getTagTextColor() {
+        return tagTextColor;
+    }
+
+    public void setTagTextColor(String tagTextColor) {
+        this.tagTextColor = tagTextColor;
+    }
+
     public String getSlug() {
         return slug;
     }
@@ -62,22 +87,6 @@ public class PostDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getTagColor() {
-        return tagColor;
-    }
-
-    public void setTagColor(String tagColor) {
-        this.tagColor = tagColor;
-    }
-
-    public String getTagTextColor() {
-        return tagTextColor;
-    }
-
-    public void setTagTextColor(String tagTextColor) {
-        this.tagTextColor = tagTextColor;
     }
 
     List<String> tags;

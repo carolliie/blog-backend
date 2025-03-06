@@ -6,12 +6,15 @@ import dev.carolliie.BlogServer.entity.PostDTO;
 import dev.carolliie.BlogServer.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PostServiceImplementation implements PostService {
@@ -21,13 +24,29 @@ public class PostServiceImplementation implements PostService {
     @Autowired
     private PostRepository postRepository;
 
-    public Post savePost(Post post) {
+    @Autowired
+    private StorageService storageService;
+
+    @Value("${minio.bucket.name}")
+    private String bucketName;
+
+    @Value("${minio.url}")
+    private String minioUrl;
+
+    public Post savePost(Post post, MultipartFile file) throws IOException {
         String result = slg.slugify(post.getName());
-        post.setLikeCount(0);
-        post.setViewCount(0);
         post.setDate(new Date());
         post.setSlug(result);
-        post.setSlug(result);
+
+        if (file != null && !file.isEmpty()) {
+            String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename().replaceAll(" ", "_");
+
+            storageService.uploadFile(bucketName, fileName, file.getInputStream(), file.getContentType());
+
+            String imageUrl = minioUrl + "/" + bucketName + "/" + fileName;
+
+            post.setImg(imageUrl);
+        }
 
         return postRepository.save(post);
     }
@@ -64,7 +83,7 @@ public class PostServiceImplementation implements PostService {
         }
     }
 
-    public Post editPostBySlug(String postSlug, PostDTO postDto) {
+    public Post editPostBySlug(String postSlug, PostDTO postDto, MultipartFile file) throws IOException {
         Optional<Post> optionalPost = postRepository.findBySlug(postSlug);
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
@@ -78,7 +97,15 @@ public class PostServiceImplementation implements PostService {
                 post.setContent(postDto.getContent());
             }
             if (postDto.getImg() != null) {
-                post.setImg(postDto.getImg());
+                if (file != null && !file.isEmpty()) {
+                    String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename().replaceAll(" ", "_");
+
+                    storageService.uploadFile(bucketName, fileName, file.getInputStream(), file.getContentType());
+
+                    String imageUrl = minioUrl + "/" + bucketName + "/" + fileName;
+
+                    post.setImg(imageUrl);
+                }
             }
             if (postDto.getDate() != null) {
                 post.setDate(postDto.getDate());
@@ -86,22 +113,17 @@ public class PostServiceImplementation implements PostService {
             if (postDto.getTags() != null) {
                 post.setTags(postDto.getTags());
             }
+            if (postDto.getTagColor() != null) {
+                post.setTagColor(postDto.getTagColor());
+            }
+            if (postDto.getTagTextColor() != null) {
+                post.setTagTextColor(postDto.getTagTextColor());
+            }
 
             postRepository.save(post);
             return post;
         } else {
             throw new EntityNotFoundException("Post not found or deleted.");
         }
-    }
-
-    private String generateUniqueSlug(String postSlug) {
-        String slugCheck = postSlug;
-        int counter = 1;
-
-        while (postRepository.findBySlug(slugCheck).isPresent()) {
-            slugCheck = postSlug + "-" + counter;
-            counter++;
-        }
-        return slugCheck;
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Data
-public class Post {
+public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,11 +30,8 @@ public class Post {
     @Column(length = 5000)
     private String img;
 
-    @Column(length = 5000)
-    private String slug;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    @Column(length = 100)
+    private String projectColor;
 
     @Column(length = 100)
     private String tagColor;
@@ -42,8 +39,14 @@ public class Post {
     @Column(length = 100)
     private String tagTextColor;
 
+    @Column(length = 5000)
+    private String slug;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
+
     @ElementCollection
-    @CollectionTable(name = "post_tags", joinColumns = @JoinColumn(name = "post_id"))
+    @CollectionTable(name = "project_tags", joinColumns = @JoinColumn(name = "project_id"))
     @Column(name = "tags")
     private List<String> tags;
 }
