@@ -15,11 +15,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/register")
+    /*@PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         User savedUser = userService.registerNewUser(user);
         return ResponseEntity.ok(savedUser);
-    }
+    }*/
 
     @GetMapping("/{slug}")
     public ResponseEntity<?> getUserBySlug(@PathVariable String slug) {
