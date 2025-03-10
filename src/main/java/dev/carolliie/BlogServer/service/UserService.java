@@ -23,12 +23,12 @@ public class UserService {
 
     final Slugify slg = Slugify.builder().build();
 
-    /*public User registerNewUser(User user) {
+    public User registerNewUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         String result = slg.slugify(user.getUsername());
         user.setSlug(result);
         return userRepository.save(user);
-    }*/
+    }
 
     public User getUserBySlug(String slug) {
         Optional<User> user = userRepository.findBySlug(slug);
